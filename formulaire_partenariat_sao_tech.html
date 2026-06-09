@@ -451,11 +451,7 @@
 <!-- MAIN -->
 <div class="main">
   <div class="form-card">
-    <form id="partnerForm" action="https://formsubmit.co/ajax/sta.sarl2024@gmail.com" method="POST">
-      <input type="hidden" name="_subject" value="Nouvelle candidature partenariat Sao Tech Agency">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="box">
-      <input type="hidden" name="_honey" style="display:none">
+    <div id="partnerForm">
 
     <!-- SECTION 1 : ENTREPRISE -->
     <div class="section-panel active" id="sec0">
@@ -907,23 +903,28 @@ function showFinalError(message) {
 
 function submitForm() {
   if (!validate(3)) return;
-  const form = document.getElementById('partnerForm');
-  const formData = new FormData(form);
-  if (formData.get('_honey')) {
-    showFinalError('Validation invalide.' );
-    return;
-  }
+
+  // Collecter toutes les données manuellement (pas de <form> natif)
+  const formData = new FormData();
+  document.querySelectorAll('#partnerForm input, #partnerForm select, #partnerForm textarea').forEach(function(el) {
+    if (!el.name || el.name.startsWith('_honey')) return;
+    if ((el.type === 'checkbox' || el.type === 'radio') && !el.checked) return;
+    formData.append(el.name, el.value);
+  });
+  formData.append('_subject', 'Nouvelle candidature partenariat Sao Tech Agency');
+  formData.append('_captcha', 'false');
+  formData.append('_template', 'box');
 
   const btnSubmit = document.getElementById('btnNext');
   btnSubmit.disabled = true;
   btnSubmit.innerHTML = 'Envoi en cours…';
 
-  fetch(form.action, {
+  fetch('https://formsubmit.co/ajax/sta.sarl2024@gmail.com', {
     method: 'POST',
     body: formData,
     headers: { 'Accept': 'application/json' }
-  }).then(response => response.json())
-  .then(data => {
+  }).then(function(response) { return response.json(); })
+  .then(function(data) {
     if (data.success === 'true' || data.success === true) {
       document.getElementById('sec3').style.display = 'none';
       document.getElementById('navBar').style.display = 'none';
@@ -935,7 +936,7 @@ function submitForm() {
       btnSubmit.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg> Soumettre ma candidature';
       showFinalError('Impossible d\'envoyer le formulaire. Réessayez plus tard.');
     }
-  }).catch(() => {
+  }).catch(function() {
     btnSubmit.disabled = false;
     btnSubmit.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg> Soumettre ma candidature';
     showFinalError('Impossible d\'envoyer le formulaire. Vérifiez votre connexion.');
