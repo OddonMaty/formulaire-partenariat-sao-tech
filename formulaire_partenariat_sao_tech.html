@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candidature — Site Web Gratuit | Sao Tech Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-900: #042C53;
+    --blue-800: #0C447C;
+    --blue-600: #185FA5;
+    --blue-400: #378ADD;
+    --blue-100: #B5D4F4;
+    --blue-50:  #E6F1FB;
+    --coral:    #D85A30;
+    --teal:     #1D9E75;
+    --teal-50:  #E1F5EE;
+    --gray-900: #2C2C2A;
+    --gray-600: #5F5E5A;
+    --gray-200: #B4B2A9;
+    --gray-50:  #F1EFE8;
+    --white:    #FFFFFF;
+    --radius:   10px;
+    --radius-lg:16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-900);
+    min-height: 100vh;
+  }
+
+  /* ── HERO HEADER ── */
+  .hero {
+    background: var(--blue-900);
+    padding: 3rem 1.5rem 5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(55,138,221,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(55,138,221,0.15);
+    border: 1px solid rgba(181,212,244,0.3);
+    color: var(--blue-100);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 1.25rem;
+  }
+  .hero-badge span { width: 6px; height: 6px; background: var(--blue-400); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    font-weight: 400;
+  }
+  .hero h1 em { color: var(--blue-400); font-style: italic; }
+  .hero p {
+    font-size: 1rem;
+    color: var(--blue-100);
+    max-width: 520px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .offer-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  .pill {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pill svg { width:14px; height:14px; opacity:0.7; }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    background: var(--white);
+    border-bottom: 1px solid #e5e3de;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0.75rem 1.5rem;
+  }
+  .progress-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .prog-step {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray-200);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .prog-step.active { color: var(--blue-600); }
+  .prog-step.done { color: var(--teal); }
+  .prog-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 600;
+    flex-shrink: 0;
+  }
+  .prog-step.done .prog-num {
+    background: var(--teal); border-color: var(--teal); color: #fff;
+  }
+  .prog-step.active .prog-num {
+    background: var(--blue-600); border-color: var(--blue-600); color: #fff;
+  }
+  .prog-line { flex: 1; height: 1.5px; background: #e5e3de; border-radius: 1px; }
+  .prog-line.done { background: var(--teal); }
+
+  /* ── MAIN LAYOUT ── */
+  .main { max-width: 760px; margin: -2.5rem auto 4rem; padding: 0 1.25rem; }
+
+  /* ── FORM CARD ── */
+  .form-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 2px 24px rgba(4,44,83,0.08), 0 0 0 1px rgba(4,44,83,0.06);
+    overflow: hidden;
+  }
+  .section-panel { display: none; padding: 2rem 2.25rem; }
+  .section-panel.active { display: block; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1.5px solid var(--blue-50);
+  }
+  .section-icon {
+    width: 40px; height: 40px;
+    background: var(--blue-50);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-icon svg { width: 20px; height: 20px; stroke: var(--blue-600); }
+  .section-title { font-size: 1.1rem; font-weight: 600; color: var(--blue-900); }
+  .section-sub { font-size: 12px; color: var(--gray-600); margin-top: 2px; }
+
+  /* ── FIELDS ── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media(max-width:580px){ .grid2 { grid-template-columns: 1fr; } }
+  .field { margin-bottom: 1.125rem; }
+  .field:last-child { margin-bottom: 0; }
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-900);
+    margin-bottom: 5px;
+  }
+  label .req { color: var(--coral); margin-left: 2px; }
+  label .hint-text { font-weight: 400; color: var(--gray-600); font-size: 12px; margin-left: 4px; }
+  input[type=text], input[type=email], input[type=tel], select, textarea {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 10px 13px;
+    border: 1.5px solid #e5e3de;
+    border-radius: var(--radius);
+    background: #fafaf9;
+    color: var(--gray-900);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--blue-400);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(55,138,221,0.12);
+  }
+  input.error, select.error, textarea.error {
+    border-color: var(--coral);
+    box-shadow: 0 0 0 3px rgba(216,90,48,0.1);
+  }
+  textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235F5E5A' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+  .field-hint { font-size: 11px; color: var(--gray-600); margin-top: 4px; }
+
+  /* ── CHECKBOXES ── */
+  .check-grid { display: flex; flex-direction: column; gap: 8px; }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1.5px solid #e5e3de;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    background: #fafaf9;
+    user-select: none;
+  }
+  .check-item:hover { border-color: var(--blue-100); background: var(--blue-50); }
+  .check-item.selected { border-color: var(--blue-400); background: var(--blue-50); }
+  .check-item input[type=checkbox] {
+    width: 18px; height: 18px;
+    accent-color: var(--blue-600);
+    flex-shrink: 0;
+    margin-top: 1px;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0; border: none; background: none; box-shadow: none;
+  }
+  .check-item input:focus { box-shadow: none; border: none; }
+  .check-label { font-size: 13px; font-weight: 500; color: var(--gray-900); }
+  .check-desc { font-size: 12px; color: var(--gray-600); margin-top: 2px; line-height: 1.4; }
+
+  /* ── TERMS ── */
+  .terms-block {
+    background: var(--gray-50);
+    border: 1.5px solid #e5e3de;
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .terms-title { font-size: 13px; font-weight: 600; color: var(--blue-900); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 6px; }
+  .terms-body { font-size: 12px; color: var(--gray-600); line-height: 1.75; max-height: 200px; overflow-y: auto; padding-right: 4px; }
+  .terms-body p { margin-bottom: 0.6rem; }
+  .terms-body strong { color: var(--gray-900); }
+  .terms-agree {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e3de;
+    cursor: pointer;
+  }
+  .terms-agree input[type=checkbox] {
+    width: 18px; height: 18px;
+    accent-color: var(--blue-600);
+    flex-shrink: 0;
+    margin-top: 1px;
+    padding: 0; border: none; background: none; box-shadow: none;
+  }
+  .terms-agree label { font-size: 13px; color: var(--gray-900); cursor: pointer; line-height: 1.5; }
+
+  /* ── NAVIGATION ── */
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2.25rem;
+    border-top: 1px solid var(--gray-50);
+    background: #fafaf9;
+  }
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 22px;
+    border-radius: var(--radius);
+    border: 1.5px solid #e5e3de;
+    background: var(--white);
+    color: var(--gray-900);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  }
+  .btn:hover { background: var(--gray-50); border-color: var(--gray-200); }
+  .btn:active { transform: scale(0.98); }
+  .btn.primary {
+    background: var(--blue-600);
+    color: var(--white);
+    border-color: var(--blue-600);
+  }
+  .btn.primary:hover { background: var(--blue-800); border-color: var(--blue-800); }
+  .btn.submit-btn {
+    background: var(--blue-900);
+    color: var(--white);
+    border-color: var(--blue-900);
+    padding: 12px 28px;
+    font-size: 15px;
+  }
+  .btn.submit-btn:hover { background: var(--blue-800); }
+  .btn svg { width: 16px; height: 16px; }
+  .step-counter { font-size: 12px; color: var(--gray-600); }
+
+  /* ── OFFER BANNER ── */
+  .offer-banner {
+    background: linear-gradient(135deg, var(--teal-50), var(--blue-50));
+    border: 1.5px solid var(--blue-100);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+  .offer-banner svg { width: 20px; height: 20px; stroke: var(--blue-600); flex-shrink: 0; margin-top: 1px; }
+  .offer-banner p { font-size: 13px; color: var(--blue-900); line-height: 1.6; }
+  .offer-banner strong { color: var(--blue-600); }
+
+  /* ── SUCCESS ── */
+  .success-screen { display: none; text-align: center; padding: 4rem 2rem; }
+  .success-screen.show { display: block; }
+  .success-icon {
+    width: 72px; height: 72px;
+    background: var(--teal-50);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+  }
+  .success-icon svg { width: 36px; height: 36px; stroke: var(--teal); }
+  .success-screen h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.75rem;
+    color: var(--blue-900);
+    margin-bottom: 0.75rem;
+    font-weight: 400;
+  }
+  .success-screen p { font-size: 14px; color: var(--gray-600); line-height: 1.7; max-width: 420px; margin: 0 auto 1.5rem; }
+  .success-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--blue-50);
+    border: 1px solid var(--blue-100);
+    color: var(--blue-800);
+    font-size: 13px;
+    padding: 10px 18px;
+    border-radius: var(--radius);
+  }
+  .success-note svg { width: 16px; height: 16px; stroke: var(--blue-600); }
+
+  /* ── ERROR MSG ── */
+  .error-msg {
+    display: none;
+    background: #FCEBEB;
+    border: 1px solid #F09595;
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #791F1F;
+    margin-bottom: 1rem;
+    align-items: center;
+    gap: 8px;
+  }
+  .error-msg.show { display: flex; }
+  .error-msg svg { width: 16px; height: 16px; stroke: #A32D2D; flex-shrink: 0; }
+
+  /* ── FOOTER ── */
+  footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--gray-200); }
+  footer a { color: var(--blue-400); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge"><span></span> Programme Partenaires 2026</div>
+  <h1>Un site web <em>gratuit</em><br>pour votre entreprise</h1>
+  <p>Bénéficiez d'un site web professionnel conçu par Sao Tech Agency en échange d'un partenariat exclusif pour votre marketing digital.</p>
+  <div class="offer-pills">
+    <div class="pill">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      Conception gratuite
+    </div>
+    <div class="pill">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      Hébergement inclus
+    </div>
+    <div class="pill">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      Support technique
+    </div>
+    <div class="pill">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      Partenariat 12 mois
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap" id="progressWrap">
+  <div class="progress-inner">
+    <div class="prog-step active" id="tab0" onclick="goToStep(0)">
+      <div class="prog-num">1</div>
+      <span>Entreprise</span>
+    </div>
+    <div class="prog-line" id="line01"></div>
+    <div class="prog-step" id="tab1" onclick="goToStep(1)">
+      <div class="prog-num">2</div>
+      <span>Projet</span>
+    </div>
+    <div class="prog-line" id="line12"></div>
+    <div class="prog-step" id="tab2" onclick="goToStep(2)">
+      <div class="prog-num">3</div>
+      <span>Partenariat</span>
+    </div>
+    <div class="prog-line" id="line23"></div>
+    <div class="prog-step" id="tab3" onclick="goToStep(3)">
+      <div class="prog-num">4</div>
+      <span>Confirmation</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="form-card">
+    <form id="partnerForm" action="https://formsubmit.co/sta.sarl2024@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="Nouvelle candidature partenariat Sao Tech Agency">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="box">
+      <input type="hidden" name="_honey" style="display:none">
+
+    <!-- SECTION 1 : ENTREPRISE -->
+    <div class="section-panel active" id="sec0">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+          </svg>
+        </div>
+        <div>
+          <div class="section-title">Informations sur l'entreprise</div>
+          <div class="section-sub">Dites-nous qui vous êtes — étape 1 sur 4</div>
+        </div>
+      </div>
+
+      <div id="err0" class="error-msg">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Veuillez remplir tous les champs obligatoires (*).
+      </div>
+
+      <div class="grid2">
+        <div class="field">
+          <label>Nom de l'entreprise <span class="req">*</span></label>
+          <input type="text" id="company" name="company" placeholder="Ex : Masi Distribution">
+        </div>
+        <div class="field">
+          <label>Secteur d'activité <span class="req">*</span></label>
+          <select id="sector" name="sector">
+            <option value="">Choisir...</option>
+            <option>Commerce & Distribution</option>
+            <option>Restauration & Alimentation</option>
+            <option>Beauté & Bien-être</option>
+            <option>Santé & Pharmacie</option>
+            <option>Éducation & Formation</option>
+            <option>Transport & Logistique</option>
+            <option>Construction & BTP</option>
+            <option>Agriculture & Agroalimentaire</option>
+            <option>Technologies & Informatique</option>
+            <option>Mode & Habillement</option>
+            <option>Finance & Assurance</option>
+            <option>Autre</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="field">
+          <label>Nom complet du responsable <span class="req">*</span></label>
+          <input type="text" id="contact" name="contact" placeholder="Prénom et Nom">
+        </div>
+        <div class="field">
+          <label>Poste / Fonction</label>
+          <input type="text" id="role" name="role" placeholder="Ex : Directeur général">
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="field">
+          <label>Téléphone <span class="req">*</span></label>
+          <input type="tel" id="phone" name="phone" placeholder="+243 / +256 / +225...">
+        </div>
+        <div class="field">
+          <label>Email professionnel <span class="req">*</span></label>
+          <input type="email" id="email" name="email" placeholder="contact@entreprise.com">
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="field">
+          <label>Ville / Localisation <span class="req">*</span></label>
+          <input type="text" id="city" name="city" placeholder="Ex : Kinshasa, Kampala, Abidjan...">
+        </div>
+        <div class="field">
+          <label>Effectif de l'entreprise</label>
+          <select id="size" name="size">
+            <option value="">Choisir...</option>
+            <option>1 – 5 personnes</option>
+            <option>6 – 20 personnes</option>
+            <option>21 – 50 personnes</option>
+            <option>Plus de 50 personnes</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Date de création <span class="hint-text">(optionnel)</span></label>
+          <input type="text" id="founded" name="founded" placeholder="Ex : 2023, mars 2024...">
+        <div class="field-hint">Nous privilégions les entreprises de moins de 3 ans.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 2 : PROJET -->
+    <div class="section-panel" id="sec1">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+          </svg>
+        </div>
+        <div>
+          <div class="section-title">Votre projet de site web</div>
+          <div class="section-sub">Décrivez ce que vous souhaitez — étape 2 sur 4</div>
+        </div>
+      </div>
+
+      <div id="err1" class="error-msg">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Veuillez remplir tous les champs obligatoires (*).
+      </div>
+
+      <div class="offer-banner">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+        </svg>
+        <p><strong>Offre incluse :</strong> conception du site, hébergement 12 mois et formation à l'utilisation — entièrement gratuits en échange de votre engagement partenariat.</p>
+      </div>
+
+      <div class="field">
+        <label>Type de site souhaité <span class="req">*</span></label>
+        <select id="sitetype" name="sitetype">
+          <option value="">Choisir le type...</option>
+          <option>Site vitrine (présentation de l'entreprise)</option>
+          <option>Site e-commerce (vente en ligne)</option>
+          <option>Site portfolio (galerie de travaux)</option>
+          <option>Blog professionnel</option>
+          <option>Site avec réservation en ligne</option>
+          <option>Autre</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Décrivez votre activité et vos objectifs <span class="req">*</span></label>
+        <textarea id="description" name="description" placeholder="Ex : Nous vendons des produits cosmétiques naturels locaux et souhaitons développer notre présence en ligne pour toucher plus de clients. Notre objectif est d'augmenter nos ventes de 30% en 6 mois..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Présence en ligne actuelle</label>
+        <select id="existing" name="existing">
+          <option value="">Choisir...</option>
+          <option>Non, aucune présence en ligne</option>
+          <option>Oui, une page Facebook / Instagram seulement</option>
+          <option>Oui, un site web existant mais à refaire</option>
+          <option>Oui, un site web et des réseaux actifs</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- SECTION 3 : PARTENARIAT -->
+    <div class="section-panel" id="sec2">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 11H7a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2z"/><path d="M11 11V7a2 2 0 0 1 4 0v4M7 11V7a2 2 0 0 1 4 0"/>
+          </svg>
+        </div>
+        <div>
+          <div class="section-title">Engagement de partenariat</div>
+          <div class="section-sub">Sélectionnez vos services — étape 3 sur 4</div>
+        </div>
+      </div>
+
+      <div id="err2" class="error-msg">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Veuillez sélectionner au minimum 2 services de partenariat.
+      </div>
+
+      <div class="field">
+        <label>Services confiés exclusivement à Sao Tech Agency <span class="req">*</span></label>
+        <div class="field-hint" style="margin-bottom:10px">Minimum 2 services requis pour bénéficier de l'offre.</div>
+        <div class="check-grid" id="servicesGroup">
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="services[]" value="gestion_rs">
+            <div>
+              <div class="check-label">📱 Gestion des réseaux sociaux</div>
+              <div class="check-desc">Facebook, Instagram, TikTok, LinkedIn — création de contenu & animation de communauté</div>
+            </div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="services[]" value="seo">
+            <div>
+              <div class="check-label">🔍 Référencement naturel (SEO)</div>
+              <div class="check-desc">Optimisation de votre visibilité sur Google et autres moteurs de recherche</div>
+            </div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="services[]" value="pub_payante">
+            <div>
+              <div class="check-label">📣 Publicités payantes (Google Ads, Meta Ads)</div>
+              <div class="check-desc">Campagnes publicitaires ciblées pour attirer des clients rapidement</div>
+            </div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="services[]" value="photo_video">
+            <div>
+              <div class="check-label">🎬 Production photo & vidéo</div>
+              <div class="check-desc">Shooting produits, vidéos institutionnelles, reels et contenus promotionnels</div>
+            </div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="services[]" value="email_mkt">
+            <div>
+              <div class="check-label">✉️ Email marketing & newsletter</div>
+              <div class="check-desc">Campagnes email pour fidéliser vos clients et générer des ventes récurrentes</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:1.25rem">
+        <label>Comment avez-vous entendu parler de cette offre ?</label>
+        <select id="source" name="source">
+          <option value="">Choisir...</option>
+          <option>Réseaux sociaux (Facebook, Instagram...)</option>
+          <option>Bouche à oreille / recommandation</option>
+          <option>Site web de Sao Tech Agency</option>
+          <option>WhatsApp / SMS</option>
+          <option>Événement / foire / salon</option>
+          <option>Autre</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Message complémentaire <span class="hint-text">(optionnel)</span></label>
+        <textarea id="message" name="message" style="min-height:80px" placeholder="Toute information supplémentaire sur votre projet ou vos attentes..."></textarea>
+      </div>
+    </div>
+
+    <!-- SECTION 4 : CONFIRMATION -->
+    <div class="section-panel" id="sec3">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+          </svg>
+        </div>
+        <div>
+          <div class="section-title">Conditions du partenariat</div>
+          <div class="section-sub">Lisez et acceptez avant de soumettre — étape 4 sur 4</div>
+        </div>
+      </div>
+
+      <div id="err3" class="error-msg">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Veuillez accepter les conditions du partenariat pour continuer.
+      </div>
+
+      <div class="terms-block">
+        <div class="terms-title">
+          <svg style="width:16px;height:16px;stroke:#185FA5" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Conditions Générales de Partenariat — Sao Tech Agency
+        </div>
+        <div class="terms-body">
+          <p><strong>Article 1 — Éligibilité :</strong> Le programme s'adresse exclusivement aux nouvelles entreprises de moins de 3 ans, exerçant une activité légale et déclarée, n'ayant pas de prestataire digital exclusif en cours, et disposant de la capacité juridique de signer un contrat.</p>
+          <p><strong>Article 2 — Prestations offertes :</strong> Sao Tech Agency s'engage à concevoir et livrer un site web professionnel gratuitement, incluant l'hébergement pour 12 mois, une formation basique à la mise à jour et un support technique durant les 3 premiers mois suivant la mise en ligne. Les fonctionnalités avancées (e-commerce complexe, paiement intégré) et les coûts de nom de domaine restent à la charge du Partenaire.</p>
+          <p><strong>Article 3 — Engagements du Partenaire :</strong> En contrepartie, le Partenaire s'engage à confier exclusivement à Sao Tech Agency l'ensemble de ses besoins en marketing digital pour une durée minimale de 12 mois : gestion des réseaux sociaux, SEO, campagnes publicitaires payantes, production photo/vidéo et email marketing, selon les services sélectionnés lors de la candidature.</p>
+          <p><strong>Article 4 — Durée :</strong> Le partenariat est conclu pour 12 mois, renouvelable tacitement par périodes de 6 mois, sauf préavis de 30 jours par lettre recommandée.</p>
+          <p><strong>Article 5 — Résiliation et facturation rétroactive :</strong> En cas de rupture anticipée à l'initiative du Partenaire ou de manquement grave à ses obligations, Sao Tech Agency procédera à la facturation rétroactive du site web au tarif standard, exigible sous 30 jours.</p>
+          <p><strong>Article 6 — Propriété intellectuelle :</strong> Sao Tech Agency conserve les droits sur les créations jusqu'au respect complet des obligations contractuelles. Les droits d'utilisation sont transférés au Partenaire à l'issue du partenariat, sous réserve du respect de ses engagements.</p>
+          <p><strong>Article 7 — Confidentialité :</strong> Les deux parties s'engagent à traiter de manière confidentielle toutes les informations échangées dans le cadre du partenariat.</p>
+          <p><strong>Article 8 — Responsabilité :</strong> L'Agence met en œuvre tous les moyens pour réaliser les prestations, sans garantir de résultats commerciaux spécifiques. Sa responsabilité ne peut être engagée en cas de force majeure ou de défaillance de tiers.</p>
+          <p><strong>Article 9 — Litiges :</strong> En cas de différend, les parties privilégient la résolution amiable sous 30 jours avant tout recours judiciaire. Les juridictions compétentes sont celles du siège de Sao Tech Agency.</p>
+          <p><strong>Article 10 — Dispositions générales :</strong> Ces CGP prévalent sur tout accord antérieur. Toute modification doit être actée par avenant écrit signé des deux parties. La nullité d'une clause n'affecte pas les autres.</p>
+        </div>
+        <div class="terms-agree">
+          <input type="checkbox" id="agree" name="agree" value="oui">
+          <label for="agree">Je certifie avoir lu et accepté intégralement les Conditions Générales de Partenariat de Sao Tech Agency. Je comprends que cette acceptation est contraignante et engage mon entreprise. <span class="req">*</span></label>
+        </div>
+      </div>
+
+      <div id="recap" style="background:var(--blue-50);border:1.5px solid var(--blue-100);border-radius:var(--radius);padding:1rem 1.25rem;font-size:13px;color:var(--blue-900);">
+        <div style="font-weight:600;margin-bottom:0.5rem;display:flex;align-items:center;gap:6px;">
+          <svg style="width:15px;height:15px;stroke:var(--blue-600)" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Récapitulatif de votre candidature
+        </div>
+        <div id="recap-content" style="color:var(--blue-800);line-height:1.8;"></div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>Candidature envoyée !</h2>
+      <p>Merci pour votre intérêt envers Sao Tech Agency. Notre équipe analysera votre dossier et vous contactera dans les <strong>3 à 5 jours ouvrables</strong>.</p>
+      <div class="success-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Une confirmation a été envoyée à votre adresse email.
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="nav-bar" id="navBar">
+      <button class="btn" id="btnBack" onclick="prevStep()" style="visibility:hidden">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg>
+        Retour
+      </button>
+      <span class="step-counter" id="stepCounter">Étape 1 / 4</span>
+      <button class="btn primary" id="btnNext" onclick="nextStep()">
+        Suivant
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  &copy; 2026 <a href="#">Sao Tech Agency</a> — Tous droits réservés. Ce formulaire est sécurisé et confidentiel.
+</footer>
+
+<script>
+let currentStep = 0;
+const totalSteps = 4;
+const form = document.getElementById('partnerForm');
+
+function toggleCheck(label) {
+  const cb = label.querySelector('input[type=checkbox]');
+  if (cb) {
+    setTimeout(() => {
+      label.classList.toggle('selected', cb.checked);
+    }, 0);
+  }
+}
+
+function goToStep(step) {
+  if (step > currentStep) return;
+  currentStep = step;
+  updateUI();
+}
+
+function validate(step) {
+  const errEl = document.getElementById('err' + step);
+  errEl.classList.remove('show');
+
+  if (step === 0) {
+    const fields = ['company','sector','contact','phone','email','city'];
+    let ok = true;
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      const valid = el.value.trim() !== '';
+      el.classList.toggle('error', !valid);
+      if (!valid) ok = false;
+    });
+    const emailEl = document.getElementById('email');
+    if (emailEl.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value)) {
+      emailEl.classList.add('error');
+      ok = false;
+    }
+    if (!ok) { errEl.classList.add('show'); errEl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Veuillez remplir tous les champs obligatoires (*).'; }
+    return ok;
+  }
+
+  if (step === 1) {
+    const fields = ['sitetype','description'];
+    let ok = true;
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      const valid = el.value.trim() !== '';
+      el.classList.toggle('error', !valid);
+      if (!valid) ok = false;
+    });
+    if (!ok) { errEl.classList.add('show'); }
+    return ok;
+  }
+
+  if (step === 2) {
+    const checked = document.querySelectorAll('#servicesGroup input:checked');
+    if (checked.length < 2) {
+      errEl.classList.add('show');
+      return false;
+    }
+    return true;
+  }
+
+  if (step === 3) {
+    const agree = document.getElementById('agree').checked;
+    if (!agree) { errEl.classList.add('show'); return false; }
+    return true;
+  }
+  return true;
+}
+
+function buildRecap() {
+  const company = document.getElementById('company').value;
+  const contact = document.getElementById('contact').value;
+  const city = document.getElementById('city').value;
+  const sitetype = document.getElementById('sitetype').value;
+  const services = [...document.querySelectorAll('#servicesGroup input:checked')].map(c => c.closest('.check-item').querySelector('.check-label').textContent.trim()).join(', ');
+  document.getElementById('recap-content').innerHTML =
+    `<b>Entreprise :</b> ${company} — ${city}<br>
+     <b>Responsable :</b> ${contact}<br>
+     <b>Site souhaité :</b> ${sitetype}<br>
+     <b>Services partenariat :</b> ${services}`;
+}
+
+function nextStep() {
+  if (!validate(currentStep)) return;
+  if (currentStep < totalSteps - 1) {
+    currentStep++;
+    if (currentStep === 3) buildRecap();
+    updateUI();
+  } else {
+    submitForm();
+  }
+}
+
+function prevStep() {
+  if (currentStep > 0) {
+    currentStep--;
+    updateUI();
+  }
+}
+
+function updateUI() {
+  for (let i = 0; i < totalSteps; i++) {
+    document.getElementById('sec' + i).classList.toggle('active', i === currentStep);
+    const tab = document.getElementById('tab' + i);
+    tab.classList.remove('active', 'done');
+    if (i === currentStep) tab.classList.add('active');
+    else if (i < currentStep) tab.classList.add('done');
+    if (i < totalSteps - 1) {
+      document.getElementById('line' + i + (i+1)).classList.toggle('done', i < currentStep);
+    }
+  }
+  const btnBack = document.getElementById('btnBack');
+  const btnNext = document.getElementById('btnNext');
+  const counter = document.getElementById('stepCounter');
+
+  btnBack.style.visibility = currentStep > 0 ? 'visible' : 'hidden';
+  counter.textContent = 'Étape ' + (currentStep + 1) + ' / ' + totalSteps;
+
+  if (currentStep === totalSteps - 1) {
+    btnNext.textContent = '';
+    btnNext.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg> Soumettre ma candidature`;
+    btnNext.classList.add('submit-btn');
+  } else {
+    btnNext.innerHTML = `Suivant <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor" style="width:16px;height:16px"><polyline points="9 18 15 12 9 6"/></svg>`;
+    btnNext.classList.remove('submit-btn');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showFinalError(message) {
+  const errEl = document.getElementById('err3');
+  errEl.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ${message}`;
+  errEl.classList.add('show');
+}
+
+function submitForm() {
+  if (!validate(3)) return;
+  const form = document.getElementById('partnerForm');
+  const formData = new FormData(form);
+  if (formData.get('_honey')) {
+    showFinalError('Validation invalide.' );
+    return;
+  }
+
+  fetch(form.action, {
+    method: 'POST',
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  }).then(response => {
+    if (response.ok) {
+      document.getElementById('sec3').style.display = 'none';
+      document.getElementById('navBar').style.display = 'none';
+      document.getElementById('progressWrap').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showFinalError('Impossible d’envoyer le formulaire pour le moment. Réessayez plus tard.');
+    }
+  }).catch(() => {
+    showFinalError('Impossible d’envoyer le formulaire pour le moment. Vérifiez votre connexion.');
+  });
+}
+</script>
+</body>
+</html>
